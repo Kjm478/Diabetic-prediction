@@ -1,0 +1,910 @@
+[
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "logistic_regression",
+        "kind": 2,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "def logistic_regression(X, y, learning_rate=0.1, epochs=1000):\n    m, n = X.shape\n    theta = numpy.zeros(n)\n    y = y.flatten()\n    for _ in range(epochs):\n        predictions = 1 / (1 + numpy.exp(-X.dot(theta)))  # Sigmoid function\n        gradient = X.T.dot(predictions - y) / m\n        theta -= learning_rate * gradient  # Update weights\n    return theta\ndef predict_logistic_regression(X, theta):",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "predict_logistic_regression",
+        "kind": 2,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "def predict_logistic_regression(X, theta):\n    return (1 / (1 + numpy.exp(-X.dot(theta))) >= 0.5).astype(int)\ndef naive_bayes_predict(X_train, y_train, X_test):\n    classes = numpy.unique(y_train)\n    priors = {}\n    cond_prob = {}\n    for cls in classes:\n        cls_index = numpy.where(y_train == cls)[0]\n        x_cls = X_train[cls_index]\n        priors[cls] = len(cls_index) / len(y_train)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "naive_bayes_predict",
+        "kind": 2,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "def naive_bayes_predict(X_train, y_train, X_test):\n    classes = numpy.unique(y_train)\n    priors = {}\n    cond_prob = {}\n    for cls in classes:\n        cls_index = numpy.where(y_train == cls)[0]\n        x_cls = X_train[cls_index]\n        priors[cls] = len(cls_index) / len(y_train)\n        cond_prob[cls] = numpy.mean(x_cls, axis=0)\n    y_pred = []",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "hard_voting",
+        "kind": 2,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "def hard_voting(models, X):\n    y_pred = []\n    for x in X:\n        # Get the predictions from all models for this sample\n        votes = [model(x.item) for model in models]\n        # Get the most common class (majority vote)\n        prediction = numpy.bincount(votes).argmax()  # Find the class with the most votes\n        y_pred.append(prediction)\n    return numpy.array(y_pred) \ndef soft_voting(models, X):",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "soft_voting",
+        "kind": 2,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "def soft_voting(models, X):\n    y_pred = []\n    for x in X:\n        # Get the probabilities from all models for this sample\n        probas = numpy.array([model(x) for model in models])\n        # Calculate the average probability for each class\n        avg_proba = numpy.mean(probas, axis=0)\n        # Choose the class with the highest average probability\n        prediction = numpy.argmax(avg_proba)\n        y_pred.append(prediction)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "evaluate",
+        "kind": 2,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "def evaluate(y_true, y_pred):\n    accuracy = numpy.mean(y_true == y_pred)\n    precision = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_pred == 1)\n    recall = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_true == 1)\n    f1_score = 2 * (precision * recall) / (precision + recall)\n    return accuracy, precision, recall, f1_score\n# Evaluate hard voting model\naccuracy_hard, precision_hard, recall_hard, f1_hard = evaluate(y_val, y_pred_hard)\n# Evaluate soft voting model\naccuracy_soft, precision_soft, recall_soft, f1_soft = evaluate(y_val, y_pred_soft)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "path = r'/Users/kennedymaturure/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine learning /Machine learning project/dataset'\nfilename = \"/diabetes_binary_health_indicators_BRFSS2015.csv\"\ninputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(inputData[:,0]).T #Shape is (253680, 1)\nX = numpy.atleast_2d(inputData[:, 1:]) # Shape is (253680, 21)\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "filename",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "filename = \"/diabetes_binary_health_indicators_BRFSS2015.csv\"\ninputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(inputData[:,0]).T #Shape is (253680, 1)\nX = numpy.atleast_2d(inputData[:, 1:]) # Shape is (253680, 21)\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "inputData",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "inputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(inputData[:,0]).T #Shape is (253680, 1)\nX = numpy.atleast_2d(inputData[:, 1:]) # Shape is (253680, 21)\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\nx_train = X[:(len(X)*2//3)]  # Shape is (169120, 21)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "Y",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "Y = numpy.atleast_2d(inputData[:,0]).T #Shape is (253680, 1)\nX = numpy.atleast_2d(inputData[:, 1:]) # Shape is (253680, 21)\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\nx_train = X[:(len(X)*2//3)]  # Shape is (169120, 21)\nx_val = X[(len(X)*2//3):]  # Shape is (84560, 21)\n# Goal Values Split\ny_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "X = numpy.atleast_2d(inputData[:, 1:]) # Shape is (253680, 21)\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\nx_train = X[:(len(X)*2//3)]  # Shape is (169120, 21)\nx_val = X[(len(X)*2//3):]  # Shape is (84560, 21)\n# Goal Values Split\ny_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)\ny_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "Y",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "Y = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\nx_train = X[:(len(X)*2//3)]  # Shape is (169120, 21)\nx_val = X[(len(X)*2//3):]  # Shape is (84560, 21)\n# Goal Values Split\ny_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)\ny_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)\n# ZScore/Standardize the data using Training Data",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "X = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\nx_train = X[:(len(X)*2//3)]  # Shape is (169120, 21)\nx_val = X[(len(X)*2//3):]  # Shape is (84560, 21)\n# Goal Values Split\ny_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)\ny_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)\n# ZScore/Standardize the data using Training Data\ndmean = numpy.mean(x_train, axis = 0, keepdims = True)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "x_train",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "x_train = X[:(len(X)*2//3)]  # Shape is (169120, 21)\nx_val = X[(len(X)*2//3):]  # Shape is (84560, 21)\n# Goal Values Split\ny_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)\ny_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)\n# ZScore/Standardize the data using Training Data\ndmean = numpy.mean(x_train, axis = 0, keepdims = True)\ndstd = numpy.std(x_train, axis = 0, keepdims = True)\nx_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "x_val",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "x_val = X[(len(X)*2//3):]  # Shape is (84560, 21)\n# Goal Values Split\ny_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)\ny_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)\n# ZScore/Standardize the data using Training Data\ndmean = numpy.mean(x_train, axis = 0, keepdims = True)\ndstd = numpy.std(x_train, axis = 0, keepdims = True)\nx_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd\n# compute covariance matrix",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "y_train",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "y_train = Y[:(len(Y)*2//3)]  # Shape is (169120, 1)\ny_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)\n# ZScore/Standardize the data using Training Data\ndmean = numpy.mean(x_train, axis = 0, keepdims = True)\ndstd = numpy.std(x_train, axis = 0, keepdims = True)\nx_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "y_val",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "y_val = Y[(len(Y)*2//3):]  # Shape is (169120, 1)\n# ZScore/Standardize the data using Training Data\ndmean = numpy.mean(x_train, axis = 0, keepdims = True)\ndstd = numpy.std(x_train, axis = 0, keepdims = True)\nx_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "dmean",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "dmean = numpy.mean(x_train, axis = 0, keepdims = True)\ndstd = numpy.std(x_train, axis = 0, keepdims = True)\nx_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-10:] # Shape is (21, 10)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "dstd",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "dstd = numpy.std(x_train, axis = 0, keepdims = True)\nx_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-10:] # Shape is (21, 10)\n# project data onto PCA coordinate system",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "x_train",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "x_train = (x_train-dmean)/dstd\nx_val = (x_val-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-10:] # Shape is (21, 10)\n# project data onto PCA coordinate system\n # Shape is (169120, 10)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "x_val",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "x_val = (x_val-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-10:] # Shape is (21, 10)\n# project data onto PCA coordinate system\n # Shape is (169120, 10)\nx_train_pca = numpy.dot(x_train, w)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "cov",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "cov = numpy.cov(x_train, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-10:] # Shape is (21, 10)\n# project data onto PCA coordinate system\n # Shape is (169120, 10)\nx_train_pca = numpy.dot(x_train, w)\nx_val_pca = numpy.dot(x_val, w)\n# Logistic Regression implementation (using gradient descent)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "w",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "w = eigvecs[:,-10:] # Shape is (21, 10)\n# project data onto PCA coordinate system\n # Shape is (169120, 10)\nx_train_pca = numpy.dot(x_train, w)\nx_val_pca = numpy.dot(x_val, w)\n# Logistic Regression implementation (using gradient descent)\ndef logistic_regression(X, y, learning_rate=0.1, epochs=1000):\n    m, n = X.shape\n    theta = numpy.zeros(n)\n    y = y.flatten()",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "x_train_pca",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "x_train_pca = numpy.dot(x_train, w)\nx_val_pca = numpy.dot(x_val, w)\n# Logistic Regression implementation (using gradient descent)\ndef logistic_regression(X, y, learning_rate=0.1, epochs=1000):\n    m, n = X.shape\n    theta = numpy.zeros(n)\n    y = y.flatten()\n    for _ in range(epochs):\n        predictions = 1 / (1 + numpy.exp(-X.dot(theta)))  # Sigmoid function\n        gradient = X.T.dot(predictions - y) / m",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "x_val_pca",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "x_val_pca = numpy.dot(x_val, w)\n# Logistic Regression implementation (using gradient descent)\ndef logistic_regression(X, y, learning_rate=0.1, epochs=1000):\n    m, n = X.shape\n    theta = numpy.zeros(n)\n    y = y.flatten()\n    for _ in range(epochs):\n        predictions = 1 / (1 + numpy.exp(-X.dot(theta)))  # Sigmoid function\n        gradient = X.T.dot(predictions - y) / m\n        theta -= learning_rate * gradient  # Update weights",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "log_reg_model",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "log_reg_model = logistic_regression(x_train, y_train)\nnaive_bayes_model = naive_bayes_predict(x_train, y_train, x_val)\n# Create ensemble model\nmodels = [log_reg_model, naive_bayes_model]\n# Hard voting\ny_pred_hard = hard_voting(models, x_val)\n# Soft voting (assuming models output probabilities)\ny_pred_soft = soft_voting(models, x_val)\n# Evaluate both hard voting and soft voting\ndef evaluate(y_true, y_pred):",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "naive_bayes_model",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "naive_bayes_model = naive_bayes_predict(x_train, y_train, x_val)\n# Create ensemble model\nmodels = [log_reg_model, naive_bayes_model]\n# Hard voting\ny_pred_hard = hard_voting(models, x_val)\n# Soft voting (assuming models output probabilities)\ny_pred_soft = soft_voting(models, x_val)\n# Evaluate both hard voting and soft voting\ndef evaluate(y_true, y_pred):\n    accuracy = numpy.mean(y_true == y_pred)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "models = [log_reg_model, naive_bayes_model]\n# Hard voting\ny_pred_hard = hard_voting(models, x_val)\n# Soft voting (assuming models output probabilities)\ny_pred_soft = soft_voting(models, x_val)\n# Evaluate both hard voting and soft voting\ndef evaluate(y_true, y_pred):\n    accuracy = numpy.mean(y_true == y_pred)\n    precision = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_pred == 1)\n    recall = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_true == 1)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "y_pred_hard",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "y_pred_hard = hard_voting(models, x_val)\n# Soft voting (assuming models output probabilities)\ny_pred_soft = soft_voting(models, x_val)\n# Evaluate both hard voting and soft voting\ndef evaluate(y_true, y_pred):\n    accuracy = numpy.mean(y_true == y_pred)\n    precision = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_pred == 1)\n    recall = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_true == 1)\n    f1_score = 2 * (precision * recall) / (precision + recall)\n    return accuracy, precision, recall, f1_score",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "y_pred_soft",
+        "kind": 5,
+        "importPath": "Ensemble",
+        "description": "Ensemble",
+        "peekOfCode": "y_pred_soft = soft_voting(models, x_val)\n# Evaluate both hard voting and soft voting\ndef evaluate(y_true, y_pred):\n    accuracy = numpy.mean(y_true == y_pred)\n    precision = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_pred == 1)\n    recall = numpy.sum((y_true == 1) & (y_pred == 1)) / numpy.sum(y_true == 1)\n    f1_score = 2 * (precision * recall) / (precision + recall)\n    return accuracy, precision, recall, f1_score\n# Evaluate hard voting model\naccuracy_hard, precision_hard, recall_hard, f1_hard = evaluate(y_val, y_pred_hard)",
+        "detail": "Ensemble",
+        "documentation": {}
+    },
+    {
+        "label": "predict",
+        "kind": 2,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "def predict(X, weights, b):\n    return np.sign(np.dot(X, weights) + b)\n# Predict on the training data\ny_train_pred = predict(tX, weights, b)\n# Predict on the validation data\ny_pred = predict(vX, weights, b)\nTrainaccuracy = numpy.mean(y_train_pred == tY) \nprint(f'Training Accuracy: { Trainaccuracy}')\nvalaccuracy = numpy.mean(y_pred.ravel() == vY.ravel())\nprint(f'Validation Accuracy: { valaccuracy}')",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "path = r'//Users/kennedymaturure/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine learning /Machine learning project/dataset'\nfilename = \"/diabetes_binary_health_indicators_BRFSS2015.csv\"\ninputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \nnumpy.random.seed(0)\n# Separate based on the whether diabetic or non-diabetic\ninputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "filename",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "filename = \"/diabetes_binary_health_indicators_BRFSS2015.csv\"\ninputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \nnumpy.random.seed(0)\n# Separate based on the whether diabetic or non-diabetic\ninputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "inputData",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "inputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \nnumpy.random.seed(0)\n# Separate based on the whether diabetic or non-diabetic\ninputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "inputData",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "inputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "data_0",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "data_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "data_1",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "data_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data\n#Separate data and goal values",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "num_rows",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "num_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "dataSet",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "dataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "numEig",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "numEig = 10\n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] ",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "Y",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "Y = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "X = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "Y",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "Y = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "X = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "tX",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "tX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "vX",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "vX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "tY",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "tY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "vY",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "vY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "dmean",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "dmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "dstd",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "dstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "tX",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "tX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "vX",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "vX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "cov",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "cov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)\n# Parameters for SVM\nC = 1.0",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "w",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "w = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)\n# Parameters for SVM\nC = 1.0\ntol = 1e-4\nmax_passes = 5\n# Initialize variables for the training process\nm, n = tX.shape",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "tX",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "tX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)\n# Parameters for SVM\nC = 1.0\ntol = 1e-4\nmax_passes = 5\n# Initialize variables for the training process\nm, n = tX.shape\nalpha = np.zeros(m)\nb = 0",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "C",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "C = 1.0\ntol = 1e-4\nmax_passes = 5\n# Initialize variables for the training process\nm, n = tX.shape\nalpha = np.zeros(m)\nb = 0\npasses = 0\n# Precompute the linear kernel matrix for training data\nkernel_matrix = np.dot(tX, tX.T)",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "tol",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "tol = 1e-4\nmax_passes = 5\n# Initialize variables for the training process\nm, n = tX.shape\nalpha = np.zeros(m)\nb = 0\npasses = 0\n# Precompute the linear kernel matrix for training data\nkernel_matrix = np.dot(tX, tX.T)\n# Sequential Minimal Optimization (SMO) algorithm with precomputed kernel matrix",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "max_passes",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "max_passes = 5\n# Initialize variables for the training process\nm, n = tX.shape\nalpha = np.zeros(m)\nb = 0\npasses = 0\n# Precompute the linear kernel matrix for training data\nkernel_matrix = np.dot(tX, tX.T)\n# Sequential Minimal Optimization (SMO) algorithm with precomputed kernel matrix\nwhile passes < max_passes:",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "alpha",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "alpha = np.zeros(m)\nb = 0\npasses = 0\n# Precompute the linear kernel matrix for training data\nkernel_matrix = np.dot(tX, tX.T)\n# Sequential Minimal Optimization (SMO) algorithm with precomputed kernel matrix\nwhile passes < max_passes:\n    num_changed_alphas = 0\n    for i in range(m):\n        Ei = np.sum(alpha * tY * kernel_matrix[i, :]) + b - tY[i]",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "b = 0\npasses = 0\n# Precompute the linear kernel matrix for training data\nkernel_matrix = np.dot(tX, tX.T)\n# Sequential Minimal Optimization (SMO) algorithm with precomputed kernel matrix\nwhile passes < max_passes:\n    num_changed_alphas = 0\n    for i in range(m):\n        Ei = np.sum(alpha * tY * kernel_matrix[i, :]) + b - tY[i]\n        if (tY[i] * Ei < -tol and alpha[i] < C) or (tY[i] * Ei > tol and alpha[i] > 0):",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "passes",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "passes = 0\n# Precompute the linear kernel matrix for training data\nkernel_matrix = np.dot(tX, tX.T)\n# Sequential Minimal Optimization (SMO) algorithm with precomputed kernel matrix\nwhile passes < max_passes:\n    num_changed_alphas = 0\n    for i in range(m):\n        Ei = np.sum(alpha * tY * kernel_matrix[i, :]) + b - tY[i]\n        if (tY[i] * Ei < -tol and alpha[i] < C) or (tY[i] * Ei > tol and alpha[i] > 0):\n            # Randomly select a second sample j different from i",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "kernel_matrix",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "kernel_matrix = np.dot(tX, tX.T)\n# Sequential Minimal Optimization (SMO) algorithm with precomputed kernel matrix\nwhile passes < max_passes:\n    num_changed_alphas = 0\n    for i in range(m):\n        Ei = np.sum(alpha * tY * kernel_matrix[i, :]) + b - tY[i]\n        if (tY[i] * Ei < -tol and alpha[i] < C) or (tY[i] * Ei > tol and alpha[i] > 0):\n            # Randomly select a second sample j different from i\n            j = np.random.choice([x for x in range(m) if x != i])\n            # Ensure j is within the valid range",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "weights",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "weights = np.sum((alpha * tY)[:, None] * tX, axis=0)\n# Predict function\ndef predict(X, weights, b):\n    return np.sign(np.dot(X, weights) + b)\n# Predict on the training data\ny_train_pred = predict(tX, weights, b)\n# Predict on the validation data\ny_pred = predict(vX, weights, b)\nTrainaccuracy = numpy.mean(y_train_pred == tY) \nprint(f'Training Accuracy: { Trainaccuracy}')",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "y_train_pred",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "y_train_pred = predict(tX, weights, b)\n# Predict on the validation data\ny_pred = predict(vX, weights, b)\nTrainaccuracy = numpy.mean(y_train_pred == tY) \nprint(f'Training Accuracy: { Trainaccuracy}')\nvalaccuracy = numpy.mean(y_pred.ravel() == vY.ravel())\nprint(f'Validation Accuracy: { valaccuracy}')\ntp = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 1))  # True Positives\nfp = numpy.sum((vY.ravel() == 0) & (y_pred.ravel() == 1))  # False Positives\nfn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "y_pred",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "y_pred = predict(vX, weights, b)\nTrainaccuracy = numpy.mean(y_train_pred == tY) \nprint(f'Training Accuracy: { Trainaccuracy}')\nvalaccuracy = numpy.mean(y_pred.ravel() == vY.ravel())\nprint(f'Validation Accuracy: { valaccuracy}')\ntp = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 1))  # True Positives\nfp = numpy.sum((vY.ravel() == 0) & (y_pred.ravel() == 1))  # False Positives\nfn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives\n# Avoid division by zero\nprecision = tp / (tp + fp) if (tp + fp) > 0 else 0",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "Trainaccuracy",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "Trainaccuracy = numpy.mean(y_train_pred == tY) \nprint(f'Training Accuracy: { Trainaccuracy}')\nvalaccuracy = numpy.mean(y_pred.ravel() == vY.ravel())\nprint(f'Validation Accuracy: { valaccuracy}')\ntp = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 1))  # True Positives\nfp = numpy.sum((vY.ravel() == 0) & (y_pred.ravel() == 1))  # False Positives\nfn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives\n# Avoid division by zero\nprecision = tp / (tp + fp) if (tp + fp) > 0 else 0\nrecall = tp / (tp + fn) if (tp + fn) > 0 else 0",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "valaccuracy",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "valaccuracy = numpy.mean(y_pred.ravel() == vY.ravel())\nprint(f'Validation Accuracy: { valaccuracy}')\ntp = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 1))  # True Positives\nfp = numpy.sum((vY.ravel() == 0) & (y_pred.ravel() == 1))  # False Positives\nfn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives\n# Avoid division by zero\nprecision = tp / (tp + fp) if (tp + fp) > 0 else 0\nrecall = tp / (tp + fn) if (tp + fn) > 0 else 0\nf_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "tp",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "tp = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 1))  # True Positives\nfp = numpy.sum((vY.ravel() == 0) & (y_pred.ravel() == 1))  # False Positives\nfn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives\n# Avoid division by zero\nprecision = tp / (tp + fp) if (tp + fp) > 0 else 0\nrecall = tp / (tp + fn) if (tp + fn) > 0 else 0\nf_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")\nprint(f\" Recall: {recall}\")\nprint(f\" F1-Score: {f_measure}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "fp",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "fp = numpy.sum((vY.ravel() == 0) & (y_pred.ravel() == 1))  # False Positives\nfn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives\n# Avoid division by zero\nprecision = tp / (tp + fp) if (tp + fp) > 0 else 0\nrecall = tp / (tp + fn) if (tp + fn) > 0 else 0\nf_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")\nprint(f\" Recall: {recall}\")\nprint(f\" F1-Score: {f_measure}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "fn",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "fn = numpy.sum((vY.ravel() == 1) & (y_pred.ravel() == 0))  # False Negatives\n# Avoid division by zero\nprecision = tp / (tp + fp) if (tp + fp) > 0 else 0\nrecall = tp / (tp + fn) if (tp + fn) > 0 else 0\nf_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")\nprint(f\" Recall: {recall}\")\nprint(f\" F1-Score: {f_measure}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "precision",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "precision = tp / (tp + fp) if (tp + fp) > 0 else 0\nrecall = tp / (tp + fn) if (tp + fn) > 0 else 0\nf_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")\nprint(f\" Recall: {recall}\")\nprint(f\" F1-Score: {f_measure}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "recall",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "recall = tp / (tp + fn) if (tp + fn) > 0 else 0\nf_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")\nprint(f\" Recall: {recall}\")\nprint(f\" F1-Score: {f_measure}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "f_measure",
+        "kind": 5,
+        "importPath": "SVM",
+        "description": "SVM",
+        "peekOfCode": "f_measure = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0\nprint(f\" Precision: {precision}\")\nprint(f\" Recall: {recall}\")\nprint(f\" F1-Score: {f_measure}\")",
+        "detail": "SVM",
+        "documentation": {}
+    },
+    {
+        "label": "NaiveBayes",
+        "kind": 2,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "def NaiveBayes( x_train, x_val , y_train): \n    #compute priors and conditional probabilities \n    classes = numpy.unique(y_train)\n    priors = {} \n    cond_prob = {} \n    ep = 1e-9\n    total_samples = len(y_train)\n    class_weights = {cls: total_samples / numpy.sum(y_train == cls) for cls in classes}\n    for cls in classes: \n        cls_index = numpy.where(y_train == cls)[0]",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "path = r'//Users/kennedymaturure/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine learning /Machine learning project/dataset'\nfilename = \"/diabetes_binary_health_indicators_BRFSS2015.csv\"\ninputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \nnumpy.random.seed(0)\n# Separate based on the whether diabetic or non-diabetic\ninputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "filename",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "filename = \"/diabetes_binary_health_indicators_BRFSS2015.csv\"\ninputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \nnumpy.random.seed(0)\n# Separate based on the whether diabetic or non-diabetic\ninputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "inputData",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "inputData = numpy.loadtxt(path+filename, dtype = str, delimiter = ',')[1:] #remove title element \nnumpy.random.seed(0)\n# Separate based on the whether diabetic or non-diabetic\ninputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "inputData",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "inputData = numpy.array(inputData, dtype = numpy.float64)\ndata_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "data_0",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "data_0 = inputData[inputData[:, 0] == 0] # Shape is (218334, 22)\ndata_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "data_1",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "data_1 = inputData[inputData[:, 0] == 1] # Shape is (35346, 22)\n#Shuffle Observations\nnumpy.random.shuffle(data_0)\nnum_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data\n#Separate data and goal values",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "num_rows",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "num_rows = data_1.shape[0]\ndataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "dataSet",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "dataSet = numpy.vstack((data_1, data_0[0:num_rows, :]))\nnumpy.random.shuffle(dataSet) \n# Number of Eigenvectors used\nnumEig = 10\n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "numEig",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "numEig = 10\n#Pre-process Data\n#Separate data and goal values\nY = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] ",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "Y",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "Y = numpy.atleast_2d(dataSet[:,0]).T \nX = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "X = dataSet[:, 1:]\nY = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "Y",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "Y = numpy.array(Y, dtype=numpy.float64)\nX = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "X = numpy.array(X, dtype=numpy.float64)\n# Separate into training and validation data\n# Split array, 2/3 for training, 1/3 for validation\ntX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "tX",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "tX = X[:(len(X)*2//3)] \nvX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "vX",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "vX = X[(len(X)*2//3):] \n# Goal Values Split\ntY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "tY",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "tY = Y[:(len(Y)*2//3)]\nvY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "vY",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "vY = Y[(len(Y)*2//3):]\n # ZScore/Standardize the data using Training Data\ndmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "dmean",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "dmean = numpy.mean(tX, axis = 0, keepdims = True)\ndstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "dstd",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "dstd = numpy.std(tX, axis = 0, keepdims = True)\ntX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "tX",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "tX = (tX-dmean)/dstd\nvX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "vX",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "vX = (vX-dmean)/dstd\n# compute covariance matrix\ncov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "cov",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "cov = numpy.cov(tX, ddof = 1, rowvar = False) #rowvar = false for features(col), true for observations(rows)\n# get the eigenvalues of the covariance matrix using singular value decomposition\n[eigvals, eigvecs] = numpy.linalg.eigh(cov)\n# PCA 10 most relevant eigenvectors, these are the last values in the eigenvectors array by eigh. A k-value of 10 contains 66% of eigenvalues\nw = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)\ndef NaiveBayes( x_train, x_val , y_train): \n    #compute priors and conditional probabilities ",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "w",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "w = eigvecs[:,-20:] # Shape is (21, 20)\n# project data onto PCA coordinate system\ntX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)\ndef NaiveBayes( x_train, x_val , y_train): \n    #compute priors and conditional probabilities \n    classes = numpy.unique(y_train)\n    priors = {} \n    cond_prob = {} \n    ep = 1e-9",
+        "detail": "naivebayes",
+        "documentation": {}
+    },
+    {
+        "label": "tX",
+        "kind": 5,
+        "importPath": "naivebayes",
+        "description": "naivebayes",
+        "peekOfCode": "tX = numpy.dot(tX , w)  # Shape is (169120, 10)\nvX= numpy.dot (vX , w)\ndef NaiveBayes( x_train, x_val , y_train): \n    #compute priors and conditional probabilities \n    classes = numpy.unique(y_train)\n    priors = {} \n    cond_prob = {} \n    ep = 1e-9\n    total_samples = len(y_train)\n    class_weights = {cls: total_samples / numpy.sum(y_train == cls) for cls in classes}",
+        "detail": "naivebayes",
+        "documentation": {}
+    }
+]
